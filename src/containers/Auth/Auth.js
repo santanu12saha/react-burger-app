@@ -35,7 +35,8 @@ class Auth extends Component {
                 valid: false,
                 touched: false
             }
-        }
+        },
+        formIsValid: false,
     }
 
     checkValidity = (value, rules) => {
@@ -76,7 +77,13 @@ class Auth extends Component {
                 touched: true
             }
         };
-        this.setState({ controls: updatedControls });
+
+        let formIsValid = true;
+        for(let inputIdentifier in updatedControls){
+            formIsValid = updatedControls[inputIdentifier].valid && formIsValid;
+        }
+        this.setState({ controls: updatedControls, formIsValid: formIsValid });
+
     }
 
     render(){
@@ -103,7 +110,7 @@ class Auth extends Component {
             <div className={classes.Auth}>
                 <form>
                     {authForm}
-                    <Button btnType="Success">SUBMIT</Button>
+                    <Button btnType="Success" disabled={!this.state.formIsValid}>SUBMIT</Button>
                 </form>
             </div>
         );
