@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import * as actions from './store/actions/index';
  
 import classes from './App.css';
 import Layout from './hoc/Layout/Layout';
@@ -10,6 +12,11 @@ import Auth from './containers/Auth/Auth';
 import Logout from './containers/Auth/Logout/Logout';
 
 class App extends Component {
+
+  componentDidMount() {
+    this.props.onTryAutoSignup();
+  }
+
   render(){
     return (
       <div className={classes.Font}>
@@ -27,4 +34,10 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => {
+  return {
+    onTryAutoSignup: () => dispatch(actions.authCheckState())
+  }
+}; 
+
+export default withRouter(connect(null, mapDispatchToProps)(App));
